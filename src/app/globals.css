@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Brand colours — from _brand/BGuideline_Nectar Milestone (1).pdf */
+  --color-honey-gold: #e49c38;
+  --color-dusty-olive: #95a688;
+  --color-deep-gold: #d59a4d;
+  --color-soft-white: #f7f6f4;
+  /* Warm-dark body text neutral — guideline leaves this open; chosen for WCAG AA
+     (13:1 contrast) on soft-white. See _specs/landing-page.md §1 Colours. */
+  --color-ink: #2e2a24;
+
+  --font-heading: var(--font-fredoka);
+  --font-body: var(--font-body);
+
+  /* Shared motion curve — mirrors EASE_GENTLE in src/lib/motion.ts, so the
+     CSS-driven hover/press micro-interactions (Button, cards, arrows) and
+     the Framer Motion scroll reveals feel like one system. */
+  --ease-gentle: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+  background-color: var(--color-soft-white);
+  color: var(--color-ink);
+}
+
+/* Respect the OS-level reduced-motion preference for our CSS-driven
+   micro-interactions (hover lift, press scale, arrow nudge, dropdown
+   transitions). The Framer Motion scroll reveals are handled separately via
+   MotionConfig(reducedMotion="user") in layout.tsx. Some of our audience is
+   motion-sensitive — when this is on, everything should render in its final
+   state with no transform/opacity animation at all. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
